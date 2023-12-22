@@ -32,7 +32,7 @@ const Organisation = () => {
   
     useEffect(() => {
       getOrganisations();
-    }, [user]);
+    });
   
     return (
       <Layout>

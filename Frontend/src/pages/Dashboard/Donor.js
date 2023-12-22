@@ -20,7 +20,7 @@ const Donor = () => {
 
   useEffect(() => {
     getDonors();
-  }, []);
+  });
 
   return (
     <Layout>
