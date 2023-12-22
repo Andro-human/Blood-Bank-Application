@@ -146,7 +146,7 @@ const getDonorsController = async (req, res) => {
     const donorId = await inventoryModel.distinct("donor", {
       organisation,
     });
-    console.log(donorId);
+    // console.log(donorId);
     const donors = await userModel.find({ _id: { $in: donorId } });
 
     return res.status(200).send({
