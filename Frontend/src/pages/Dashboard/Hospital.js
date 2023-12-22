@@ -20,7 +20,7 @@ const Hospital = () => {
   
     useEffect(() => {
       getHospitals();
-    });
+    }, []);
   
     return (
       <Layout>
