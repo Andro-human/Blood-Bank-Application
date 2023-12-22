@@ -31,8 +31,8 @@ const Organisation = () => {
     };
   
     useEffect(() => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       getOrganisations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
   
     return (

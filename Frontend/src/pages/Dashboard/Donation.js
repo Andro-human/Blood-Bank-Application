@@ -27,6 +27,7 @@ const Donation = () => {
   
     useEffect(() => {
       getDonors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
   
     return (
