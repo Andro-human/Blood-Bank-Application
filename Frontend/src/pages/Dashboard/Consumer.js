@@ -26,6 +26,7 @@ const Consumer = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     getDonors();
   }, []);
 
