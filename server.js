@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "./client/build")));
 
 //Static Routes
 app.get("*", function (req, res) {
-  res.sendFile(path.joing(__dirname, "./client/build/index.html"));
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 //port
