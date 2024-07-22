@@ -12,8 +12,5 @@
         "dest": "server.js",
         "methods": ["GET", "POST","PUT", "PATCH", "DELETE", "OPTIONS"]
       }
-    ],
-    "rewrites": [
-      {"source": "/(.*)", "destination": "/"}
     ]
   }
