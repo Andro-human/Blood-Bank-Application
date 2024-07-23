@@ -196,7 +196,6 @@ const getHospitalContoller = async (req, res) => {
 //Get organisations for donor
 const getOrganisationController = async(req, res) => {
   try {
-    const startTime = console.time();
     const donor = req.body.userId
     const orgId = await inventoryModel.distinct('organisation', {donor})
     
@@ -204,10 +203,7 @@ const getOrganisationController = async(req, res) => {
     const organisations = await userModel.find({
       _id: {$in: orgId}
     })
-    const endTime = console.timeEnd();
 
-    console.log("TIME TAKEN:", endTime-startTime);
-    
     return res.status(200).send({
       success:true,
       message: 'Donor Org Data Fetched Successfully',
