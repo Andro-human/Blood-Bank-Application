@@ -28,6 +28,57 @@ export const userLogin = createAsyncThunk(
   }
 );
 
+//register    (Toast not working properly)
+// export const userRegister = createAsyncThunk(
+//   "auth/register",
+//   async (
+//     {
+//       name,
+//       role,
+//       email,
+//       password,
+//       organisationName,
+//       hospitalName,
+//       website,
+//       address,
+//       phone,
+//     },
+//     { rejectWithValue }
+//   ) => {
+//     try {
+//       const { data } = await API.post(
+//         "/auth/register",
+//         {
+//           name,
+//           role,
+//           email,
+//           password,
+//           organisationName,
+//           hospitalName,
+//           website,
+//           address,
+//           phone,
+//         },
+//         { rejectWithValue }
+//       );
+
+//       if (data.success) {
+//         alert("User Registered Successfully")
+//         // toast.success(data.message);
+//         // setTimeout(() => {
+//         //   window.location.replace("/login");
+//         // }, 500); // Adjust the delay time as needed
+//       }
+//         window.location.replace("/login");
+//     } catch (error) {
+//       if (error.response && error.response.data.message) {
+//         return rejectWithValue(error.response.data.message);
+//       } else {
+//         return rejectWithValue(error.message);
+//       }
+//     }
+//   }
+// );
 
 export const userRegister = createAsyncThunk(
   "auth/register",

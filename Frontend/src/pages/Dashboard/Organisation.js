@@ -32,8 +32,7 @@ const Organisation = () => {
   
     useEffect(() => {
       getOrganisations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user]);
   
     return (
       <Layout>

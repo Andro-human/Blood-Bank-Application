@@ -5,6 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();

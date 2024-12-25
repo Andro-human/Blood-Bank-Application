@@ -12,6 +12,8 @@ import Hospital from "./pages/Dashboard/Hospital";
 import Organisation from "./pages/Dashboard/Organisation";
 import Consumer from "./pages/Dashboard/Consumer";
 import Donation from "./pages/Dashboard/Donation";
+import Predict from "./pages/Dashboard/Predict"
+import Test from "./components/shared/Layout/Test";
 
 function App() {
   return (
@@ -65,7 +67,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/donation"
           element={
             <ProtectedRoute>
@@ -78,6 +80,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Organisation />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/predict"
+          element={
+            <ProtectedRoute>
+              <Predict />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/test"
+          element={
+            <ProtectedRoute>
+              <Test />
             </ProtectedRoute>
           }
         />

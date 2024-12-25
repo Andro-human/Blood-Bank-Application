@@ -29,6 +29,10 @@ const Sidebar = () => {
                   <i className="fa-solid fa-hospital"></i>
                   <Link to="/hospital">Hospital</Link>
               </div>
+              <div className={`menu-item ${location.pathname === "/predict" && 'active'}`} >
+                  <i className="fa-solid fa-hospital"></i>
+                  <Link to="/predict">Demand Insights</Link>
+              </div>
             </>
           )}
           {(user?.role === 'donor' || user?.role === 'hospital') && (
