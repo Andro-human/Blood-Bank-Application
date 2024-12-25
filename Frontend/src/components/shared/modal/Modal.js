@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import InputType from "./../Form/InputType";
+import InputType from "../Form/InputType";
 import { toast } from "react-toastify";
-import API from "./../../../services/API";
+import API from "../../../services/API";
 import "../../../styles/modal.css";
 
 const Modal = () => {
@@ -11,7 +11,7 @@ const Modal = () => {
   const [quantity, setQuantity] = useState(0);
   const [email, setEmail] = useState("");
   // const [hospitalEmail, setHospitalEmail] = useState("");
-  
+
   const { user } = useSelector((state) => state.auth);
   // handle modal data
   const handleModalSubmit = async (e) => {

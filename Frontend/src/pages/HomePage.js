@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Spinner from "./../components/shared/Spinner";
+import Spinner from "../components/shared/Spinner.js";
 import { toast } from "react-toastify";
-import Layout from "../components/shared/Layout/Layout";
+import Layout from "../components/shared/Layout/Layout.js";
 import "../styles/homePage.css";
 import API from "../services/API.js";
 import moment from "moment";

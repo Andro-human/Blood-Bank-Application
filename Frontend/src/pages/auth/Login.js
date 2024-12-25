@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Form from "../../components/shared/Form/Form";
 import { useSelector } from "react-redux";
-import Spinner from "./../../components/shared/Spinner";
+import Spinner from "../../components/shared/Spinner";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -27,20 +27,27 @@ const Login = () => {
             backgroundPosition: "center",
           }}
         >
-           
-        <div style={{
-          backgroundColor: "rgba(255, 255, 255, 0.7)",
-          width: "32vmax",
-          height: "60vh",
-          justifyContent: "center",
-          display: "flex",
-        }}>
-          <div style={{            
-          margin: "30px", 
-          width: "21vmax"           
-          }}>
-            <Form formTitle={"Login"} submitBtm={"Login"} formType={"Login"}/>
-          </div>
+          <div
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              width: "32vmax",
+              height: "60vh",
+              justifyContent: "center",
+              display: "flex",
+            }}
+          >
+            <div
+              style={{
+                margin: "30px",
+                width: "21vmax",
+              }}
+            >
+              <Form
+                formTitle={"Login"}
+                submitBtm={"Login"}
+                formType={"Login"}
+              />
+            </div>
           </div>
         </div>
       )}

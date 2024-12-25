@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Grid2, Box } from '@mui/material';
+import { Button, Typography, MenuItem, Select, InputLabel, FormControl, Grid2, Box } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import Layout from '../../components/shared/Layout/Layout';
@@ -96,9 +96,11 @@ const App = () => {
           <Typography variant="h6" gutterBottom >
             Yearly Blood Demand Prediction
           </Typography>
-          <Button variant="contained"  onClick={handleYearPrediction} style={{ marginBottom: 20 }}>
+          {/* <Button variant="contained"  onClick={handleYearPrediction} style={{ marginBottom: 20 }}>
             Generate Yearly Prediction
-          </Button>
+          </Button> */}
+          {/* <Button variant='contained'>Generate Yearly Prediction</Button> */}
+          <button style={{backgroundColor: "#1565c0"}}>Generate Yearly Prediction</button>
           <Line data={chartDataYearly} style={{height: "20rem", width: "30rem"}} />
         </Grid2>
       </Grid2>
