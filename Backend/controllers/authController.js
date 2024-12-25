@@ -24,7 +24,11 @@ const registerController = async (req, res) => {
     return res.status(201).send({
       success: true,
       message: "User Registered Successfully",
+<<<<<<< HEAD
       // user,
+=======
+      user,
+>>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     });
   } catch (error) {
     console.log(error);
@@ -38,8 +42,11 @@ const registerController = async (req, res) => {
 
 //login call back
 const loginController = async (req, res) => {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
   try {
     const user = await userModel.findOne({ email: req.body.email });
     if (!user) {
@@ -50,10 +57,17 @@ const loginController = async (req, res) => {
     }
     // check role
     if (user.role !== req.body.role) {
+<<<<<<< HEAD
       return res.status(401).send({
         success: false,
         message: "Invalid Role",
       });
+=======
+        return res.status(401).send({
+            success: false,
+            message: "Invalid Role"
+        })
+>>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     }
     //compare password
     const comparePassword = await bcrypt.compare(
@@ -69,7 +83,10 @@ const loginController = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     return res.status(200).send({
       success: true,
       message: "Login Successfully",
@@ -89,8 +106,12 @@ const loginController = async (req, res) => {
 //GET CURRENT USER
 const currentUserController = async (req, res) => {
   try {
+<<<<<<< HEAD
     const user = await userModel.findOne({ _id: req.body.userId });
 
+=======
+    const user = await userModel.findOne({ _id: req.body.userId});
+>>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     return res.status(200).send({
       success: true,
       message: "User fetched successfully",

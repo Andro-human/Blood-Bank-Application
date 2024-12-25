@@ -1,0 +1,31 @@
+.navbar {
+    background-color: black;
+    height: 70px;
+}
+
+.nav-link {
+    color: white;
+    font-size:large;
+}
+
+.navbar-brand{
+    padding-bottom: 50px;
+    color: white;
+    font-size:x-large;
+}
+
+span {
+    background-color: grey;
+}
+
+.nav-item :hover{
+    color: rgba(255,255,255,0.8);
+}
+
+.navbar-brand:hover {
+    color: rgba(255,255,255,0.8);
+}
+
+span:hover {
+    color: rgba(255,255,255) !important
+}
