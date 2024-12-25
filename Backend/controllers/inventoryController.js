@@ -146,11 +146,7 @@ const getDonorsController = async (req, res) => {
     const donorId = await inventoryModel.distinct("donor", {
       organisation,
     });
-<<<<<<< HEAD
-    console.log(donorId);
-=======
     // console.log(donorId);
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     const donors = await userModel.find({ _id: { $in: donorId } });
 
     return res.status(200).send({
@@ -192,39 +188,12 @@ const getHospitalContoller = async (req, res) => {
     return res.status(500).send({
       success: false,
       message: "Error in get Hospital API",
-<<<<<<< HEAD
-      error,
-=======
       error
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
     });
   }
 };
 
 //Get organisations for donor
-<<<<<<< HEAD
-const getOrganisationController = async (req, res) => {
-  try {
-    const donor = req.body.userId;
-    const orgId = await inventoryModel.distinct("organisation", { donor });
-
-    //find  org
-    const organisations = await userModel.find({
-      _id: { $in: orgId },
-    });
-    return res.status(200).send({
-      success: true,
-      message: "Donor Org Data Fetched Successfully",
-      organisations,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send({
-      success: false,
-      message: "Error in Donor Org API",
-      error,
-    });
-=======
 const getOrganisationController = async(req, res) => {
   try {
     const donor = req.body.userId
@@ -247,34 +216,10 @@ const getOrganisationController = async(req, res) => {
       message: 'Error in Donor Org API',
       error
     })
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
   }
 };
 
 // Get Organisation for Hospital
-<<<<<<< HEAD
-const getOrganisationHospitalController = async (req, res) => {
-  try {
-    const hospital = req.body.userId;
-    const orgId = await inventoryModel.distinct("organisation", { hospital });
-
-    //find  org
-    const organisations = await userModel.find({
-      _id: { $in: orgId },
-    });
-    return res.status(200).send({
-      success: true,
-      message: "Hospital Org Data Fetched Successfully",
-      organisations,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send({
-      success: false,
-      message: "Error in Hospital Org API",
-      error,
-    });
-=======
 const getOrganisationHospitalController = async(req, res) => {
   try {
     const hospital = req.body.userId
@@ -296,7 +241,6 @@ const getOrganisationHospitalController = async(req, res) => {
       message: 'Error in Hospital Org API',
       error
     })
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
   }
 };
 
@@ -307,9 +251,5 @@ module.exports = {
   getHospitalContoller,
   getOrganisationController,
   getOrganisationHospitalController,
-<<<<<<< HEAD
-  getInventoryHospitalController,
-=======
   getInventoryHospitalController
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
 };

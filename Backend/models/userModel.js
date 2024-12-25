@@ -56,10 +56,7 @@ const userSchema = new mongoose.Schema (
         },
     },
     {timestamps: true}
-<<<<<<< HEAD
-=======
     
->>>>>>> 46de003f523bb93fec4d7063fa61d964c05e8384
 );
 
 module.exports = mongoose.model("user", userSchema);
