@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS  # Import CORS
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from prophet import Prophet
 from pymongo import MongoClient
 
@@ -22,7 +24,6 @@ def fetch_data_from_mongodb():
         # Retrieve data
         data = list(collection.find({}, {"_id": 0, "createdAt": 1, "quantity": 1}))  # Fetch date and donations fields
         df = pd.DataFrame(data)
-        print("data:", data)
         
         # Convert to proper format
         df['createdAt'] = pd.to_datetime(df['createdAt'])
@@ -86,8 +87,6 @@ def get_predictions():
             "weekly_averages": weekly_avg.tolist(),
             "monthly_averages": monthly_avg.tolist()
         }
-
-        
 
         return jsonify(predictions)
 
