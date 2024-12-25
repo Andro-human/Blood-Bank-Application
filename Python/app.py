@@ -1,55 +1,51 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from prophet import Prophet
 from pymongo import MongoClient
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 # MongoDB Connection Details
 connection_string = "mongodb+srv://Androhuman:UI1rwOTc7JWJFiQY@cluster-bloodbank.eolrfvo.mongodb.net/bloodbank"
 db_name = "bloodbank"
 collection_name = "inventories"
 
-# Fetch Data from MongoDB
-def fetch_data_from_mongodb():
+def fetch_data_from_mongodb(bloodType):
     try:
         client = MongoClient(connection_string)
         db = client[db_name]
         collection = db[collection_name]
-        
-        # Retrieve data
-        data = list(collection.find({}, {"_id": 0, "createdAt": 1, "quantity": 1}))  # Fetch date and donations fields
+
+        # Retrieve data for the specific blood type
+        data = list(collection.find({"bloodGroup": bloodType}, {"_id": 0, "createdAt": 1, "quantity": 1}))
+
+        if not data:
+            raise ValueError(f"No data found for blood type {bloodType}.")
+
         df = pd.DataFrame(data)
-        
-        # Convert to proper format
         df['createdAt'] = pd.to_datetime(df['createdAt'])
         df = df.rename(columns={'createdAt': 'ds', 'quantity': 'y'})
-        
+
         if df.empty or 'ds' not in df.columns or 'y' not in df.columns:
-            raise ValueError("Invalid or empty data fetched from MongoDB.")
-        
+            raise ValueError(f"Invalid or empty data for blood type {bloodType}.")
+
         return df
     except Exception as e:
-        raise RuntimeError(f"Error fetching data from MongoDB: {e}")
+        raise RuntimeError(f"Error fetching data for blood type {bloodType}: {e}")
 
-# Train Prophet Model
 def train_prophet_model(df):
-    df = df.groupby('ds', as_index=False).sum()  # Ensure no duplicate dates
+    df = df.groupby('ds', as_index=False).sum()
     m = Prophet(interval_width=0.95)
     m.fit(df)
     return m
 
-# Forecast Future Values
 def forecast_values(model, periods):
     future = model.make_future_dataframe(periods=periods)
     forecast = model.predict(future)
     return forecast
 
-# Get All Days of the Week Averages
 def week_averages(forecast):
     forecast['day_of_week'] = forecast['ds'].dt.day_name()
     weekly_avg = forecast.groupby('day_of_week')['yhat'].mean()
@@ -57,41 +53,32 @@ def week_averages(forecast):
     weekly_avg = weekly_avg[days_order]
     return weekly_avg
 
-# Get All Days of the Month Averages
 def month_averages(forecast):
     forecast['day_of_month'] = forecast['ds'].dt.day
     monthly_avg = forecast.groupby('day_of_month')['yhat'].mean()
     return monthly_avg
 
-# Define API route
 @app.route('/api/predictions', methods=['GET'])
-def get_predictions():
+def get_all_prediction():
+    blood_Type_list = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-']
+    List_all = {}
+    for bloodType in blood_Type_list:
+        List_all[bloodType] = get_predictions(bloodType)
+    return jsonify(List_all)
+
+def get_predictions(bloodType):
     try:
-        # Fetch Data
-        data = fetch_data_from_mongodb()
-
-        # Train Model
+        data = fetch_data_from_mongodb(bloodType)
         model = train_prophet_model(data)
-
-        # Forecast
-        forecast = forecast_values(model, periods=365)  # Forecast for 1 year
-
-        # Get Averages for Each Day of the Week
+        forecast = forecast_values(model, periods=365)
         weekly_avg = week_averages(forecast)
-
-        # Get Averages for Each Day of the Month
         monthly_avg = month_averages(forecast)
-
-        # Return Averages as JSON response
-        predictions = {
+        return {
             "weekly_averages": weekly_avg.tolist(),
             "monthly_averages": monthly_avg.tolist()
         }
-
-        return jsonify(predictions)
-
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     app.run(debug=True)
