@@ -20,9 +20,15 @@ const App = () => {
   ];
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/historical-data')
+    axios.get('https://blood-bank-application-12av.onrender.com/api/predictions')
       .then(response => {
-        setHistoricalData(response.data);
+        const monthlyData = response.data;
+        const dataWithDates = monthlyData["O+"]?.monthly_averages.map((value, index) => {
+          const date = new Date();
+          date.setDate(date.getDate() + index + 1); // Increment the date by the index
+          return { date: date.toISOString().split('T')[0], value }; // Format the date to YYYY-MM-DD
+        });
+        setHistoricalData(dataWithDates);
       })
       .catch(error => {
         console.error('Error fetching historical data:', error);
@@ -51,12 +57,14 @@ const App = () => {
     setYearlyPrediction(predictions);
   };
 
+  // const dataArray = Object.values(historicalData);
+  console.log("history ", historicalData);
   const chartDataMonthly = {
     labels: historicalData.map(item => item.date),
     datasets: [
       {
         label: 'Blood Demand (Monthly)',
-        data: historicalData.map(item => item.demand),
+        data: historicalData.map(item => item.value),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
@@ -96,11 +104,11 @@ const App = () => {
           <Typography variant="h6" gutterBottom >
             Yearly Blood Demand Prediction
           </Typography>
-          {/* <Button variant="contained"  onClick={handleYearPrediction} style={{ marginBottom: 20 }}>
+          <Button variant="contained"  onClick={handleYearPrediction} style={{ marginBottom: 20 }}>
             Generate Yearly Prediction
-          </Button> */}
+          </Button> 
           {/* <Button variant='contained'>Generate Yearly Prediction</Button> */}
-          <button style={{backgroundColor: "#1565c0"}}>Generate Yearly Prediction</button>
+          {/* <button style={{backgroundColor: "#1565c0"}}>Generate Yearly Prediction</button> */}
           <Line data={chartDataYearly} style={{height: "20rem", width: "30rem"}} />
         </Grid2>
       </Grid2>
