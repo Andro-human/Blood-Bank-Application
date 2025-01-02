@@ -185,16 +185,16 @@ const App = () => {
         </Button>
       </Box>
         
-      {monthSelected !== null && (
-<        Typography variant="h6" style={{ marginTop: 20 }}>
+      {/* {monthSelected !== null && (
+<       Typography variant="h6" style={{ marginTop: 20 }}>
           Predicted Blood Demand for {monthSelected}: {Math.floor(Math.random() * 100) + 50}
         </Typography>
-      )}
-      {predictedDemand !== null && (
+      )} */}
+      {/* {predictedDemand !== null && (
 <        Typography variant="h6" style={{ marginTop: 20 }}>
           Predicted Blood Demand in {daysToPredict} days: {predictedDemand}
         </Typography>
-      )}
+      )} */}
     </div>
     </Layout>
   );

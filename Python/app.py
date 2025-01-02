@@ -45,13 +45,6 @@ def forecast_values(model, periods):
     forecast = model.predict(future)
     return forecast
 
-def week_averages(forecast):
-    forecast['day_of_week'] = forecast['ds'].dt.day_name()
-    weekly_avg = forecast.groupby('day_of_week')['yhat'].mean()
-    days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    weekly_avg = weekly_avg[days_order]
-    return weekly_avg
-
 def month_averages(forecast):
     forecast['day_of_month'] = forecast['ds'].dt.day
     monthly_avg = forecast.groupby('day_of_month')['yhat'].mean()
@@ -63,6 +56,7 @@ def get_all_prediction():
     List_all = {}
     for bloodType in blood_Type_list:
         List_all[bloodType] = get_predictions(bloodType)
+    print("List_all", List_all);
     return jsonify(List_all)
 
 def get_predictions(bloodType):
