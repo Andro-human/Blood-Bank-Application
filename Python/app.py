@@ -20,7 +20,6 @@ def fetch_data_from_mongodb(bloodType):
 
         # Retrieve data for the specific blood type
         data = list(collection.find({"bloodGroup": bloodType}, {"_id": 0, "createdAt": 1, "quantity": 1}))
-        print("bloodType: ", bloodType, data)
         if not data:
             raise ValueError(f"No data found for blood type {bloodType}.")
 
@@ -71,10 +70,8 @@ def get_predictions(bloodType):
         data = fetch_data_from_mongodb(bloodType)
         model = train_prophet_model(data)
         forecast = forecast_values(model, periods=365)
-        weekly_avg = week_averages(forecast)
         monthly_avg = month_averages(forecast)
         return {
-            "weekly_averages": weekly_avg.tolist(),
             "monthly_averages": monthly_avg.tolist()
         }
     except Exception as e:

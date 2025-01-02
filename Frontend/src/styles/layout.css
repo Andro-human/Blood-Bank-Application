@@ -35,3 +35,43 @@
 .active a, .active i{
     color: #2e3200
 }
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .layout-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: #fff; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .layout-body {
+    display: flex;
+    flex-grow: 1;
+    margin-top: 60px; /* Adjust to the height of the header */
+  }
+  
+  .layout-sidebar {
+    position: fixed;
+    top: 60px; /* Same as margin-top of layout-body */
+    left: 0;
+    width: 25%; /* Adjust the width as needed */
+    height: calc(100vh - 60px); /* Full height minus header height */
+    background-color: #f8f9fa; /* Adjust as needed */
+  }
+  
+  .layout-content {
+    margin-left: 25%; /* Same as the width of the sidebar */
+    width: 75%; /* Remaining space */
+    padding: 20px; /* Adjust as needed */
+    height: calc(100vh - 60px); /* Full height minus header height */
+    overflow-y: auto;
+  }
+  

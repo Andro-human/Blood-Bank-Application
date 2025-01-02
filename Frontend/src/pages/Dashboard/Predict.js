@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Typography, MenuItem, Select, InputLabel, FormControl, Grid2, Box } from '@mui/material';
+import {Snackbar, Button, Typography, MenuItem, Select, InputLabel, FormControl, Grid2, Box } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import Layout from '../../components/shared/Layout/Layout';
+import { toast } from 'react-toastify';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -19,16 +20,18 @@ const App = () => {
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
+  const monthlyDates = Array.from({ length: 30 }, (_, index) => {
+    const date = new Date();
+    date.setDate(date.getDate() + index + 1); // Increment date
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  });
+
   useEffect(() => {
-    axios.get('https://blood-bank-application-12av.onrender.com/api/predictions')
+    axios.get('http://127.0.0.1:5000/api/predictions')
       .then(response => {
         const monthlyData = response.data;
-        const dataWithDates = monthlyData["O+"]?.monthly_averages.map((value, index) => {
-          const date = new Date();
-          date.setDate(date.getDate() + index + 1); // Increment the date by the index
-          return { date: date.toISOString().split('T')[0], value }; // Format the date to YYYY-MM-DD
-        });
-        setHistoricalData(dataWithDates);
+        console.log("monthlyData", monthlyData);
+        setHistoricalData(monthlyData);
       })
       .catch(error => {
         console.error('Error fetching historical data:', error);
@@ -36,7 +39,7 @@ const App = () => {
   }, []);
 
   const handlePredict = () => {
-    axios.post('http://localhost:5000/api/predict', { days: daysToPredict })
+    axios.post('http://localhost:5000/api/predict', { month: monthSelected })
       .then(response => {
         setPredictedDemand(response.data.predictedDemand);
       })
@@ -57,19 +60,53 @@ const App = () => {
     setYearlyPrediction(predictions);
   };
 
-  // const dataArray = Object.values(historicalData);
-  console.log("history ", historicalData);
   const chartDataMonthly = {
-    labels: historicalData.map(item => item.date),
+    labels: monthlyDates,
     datasets: [
       {
-        label: 'Blood Demand (Monthly)',
-        data: historicalData.map(item => item.value),
+        label: 'O+',
+        data: historicalData["O+"]?.monthly_averages,
         borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        backgroundColor: 'rgba(75, 192, 192, 1)',
         fill: true,
       },
+      {
+        label: 'O-',
+        data: historicalData["O-"]?.monthly_averages,
+        borderColor: 'rgb(153, 102, 255)',
+        backgroundColor: 'rgb(153, 102, 255)',
+        fill: true,
+      },
+      {
+        label: 'A+',
+        data: historicalData["A+"]?.monthly_averages,
+        borderColor: 'rgb(255, 159, 64)',
+        backgroundColor: 'rgb(255, 159, 64)',
+        fill: true,
+      },
+      {
+        label: 'A-',
+        data: historicalData["A-"]?.monthly_averages,
+        borderColor: 'rgb(255, 206, 86)',
+        backgroundColor: 'rgb(255, 206, 86)',
+        fill: true,
+      },
+      {
+        label: 'B+',
+        data: historicalData["B+"]?.monthly_averages,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgb(255, 99, 132)',
+        fill: true,
+      },
+      {
+        label: 'B-',
+        data: historicalData["B-"]?.monthly_averages,
+        borderColor: 'rgb(56, 128, 255)',
+        backgroundColor: 'rgb(56, 128, 255)',
+        fill: true,
+      }
     ],
+    
   };
 
   const chartDataYearly = {
@@ -107,9 +144,9 @@ const App = () => {
           <Button variant="contained"  onClick={handleYearPrediction} style={{ marginBottom: 20 }}>
             Generate Yearly Prediction
           </Button> 
-          {/* <Button variant='contained'>Generate Yearly Prediction</Button> */}
-          {/* <button style={{backgroundColor: "#1565c0"}}>Generate Yearly Prediction</button> */}
+         
           <Line data={chartDataYearly} style={{height: "20rem", width: "30rem"}} />
+          
         </Grid2>
       </Grid2>
 
@@ -134,14 +171,25 @@ const App = () => {
           color="primary"
           onClick={() => {
             if (monthSelected) {
-              alert(`Predicted Blood Demand for ${monthSelected}: ${Math.floor(Math.random() * 100) + 50}`);
+              // handlePredict();
+              toast.success(`Predicted Blood Demand for ${monthSelected}: ${Math.floor(Math.random() * 100) + 50}`, {
+                position: "bottom-center",
+              });
+            }
+            else {
+              toast.error("Month not selected")
             }
           }}
         >
           Get Predicted Demand for Selected Month
         </Button>
       </Box>
-
+        
+      {monthSelected !== null && (
+<        Typography variant="h6" style={{ marginTop: 20 }}>
+          Predicted Blood Demand for {monthSelected}: {Math.floor(Math.random() * 100) + 50}
+        </Typography>
+      )}
       {predictedDemand !== null && (
 <        Typography variant="h6" style={{ marginTop: 20 }}>
           Predicted Blood Demand in {daysToPredict} days: {predictedDemand}
