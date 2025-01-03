@@ -80,6 +80,11 @@ def put_all_prediction():
         "status": "working"
     }
 
+@app.route('/')
+def healthCheck():
+    return {
+        "status": "Server is Running"
+    }
 
 
 def get_predictions(bloodType):
