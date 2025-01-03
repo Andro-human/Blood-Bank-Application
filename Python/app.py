@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
 import pandas as pd
 from prophet import Prophet
@@ -104,7 +104,7 @@ def get_predictions(bloodType):
         api_url = "http://localhost:8080/api/v1/predict/insertPrediction"
 
         # Insert yearly predictions
-        print("L_yearly", L_yearly);
+        # print("L_yearly", L_yearly);
         for idx, value in enumerate(L_yearly):
             prediction = {
                 "bloodType": bloodType,
@@ -112,12 +112,12 @@ def get_predictions(bloodType):
                 "value": value,
                 "predictionType": "yearly_avg"
             }
-            print("yearlyPrediction", prediction);
+            # print("yearlyPrediction", prediction);
             response = requests.post(api_url, json=prediction)
-            print("response", response.text)
+            # print("response", response.text)
 
         # Insert monthly predictions
-        print("L_monthly", L_monthly);
+        # print("L_monthly", L_monthly);
         for idx, value in enumerate(L_monthly):
             prediction = {
                 "bloodType": bloodType,
@@ -125,9 +125,9 @@ def get_predictions(bloodType):
                 "value": value,
                 "predictionType": "monthly_avg"
             }
-            print("monthlyPrediction", prediction);
+            # print("monthlyPrediction", prediction);
             response = requests.post(api_url, json=prediction)
-            print("response", response.text);
+            # print("response", response.text);
         
         # Return the results
         return {
