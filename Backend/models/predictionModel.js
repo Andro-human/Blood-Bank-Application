@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const PredictionSchema = new mongoose.Schema({
-    BloodType: {
+    bloodType: {
         type: String,
         required: [true, "blood group is required"],
         enum: ["O+", "O-", "AB+", "AB-", "A+", "A-", "B+", "B-"],
