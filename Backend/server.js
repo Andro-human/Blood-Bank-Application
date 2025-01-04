@@ -21,17 +21,23 @@ app.use(morgan("dev"));
 
 //routes
 // 1 test route
+
+app.use("/", (req, res, next) => {
+  if (req.path === "/") {
+    console.log("Server is Running");
+    return res.status(200).send({
+      success: true,
+      message: "Server is Running",
+    });
+  }
+  next();
+});
+
 app.use("/api/v1/test", require("./routes/testRoutes"));
 app.use("/api/v1/auth", require("./routes/authRoutes"));
 app.use("/api/v1/inventory", require("./routes/inventoryRoutes"));
 app.use("/api/v1/predict", require("./routes/predictionRoutes"));
 
-app.use("/", (req, res) => {
-  return res.status(200).send({
-    success: true,
-    message: "Server is Running",
-  });
-})
 //Static Folder
 // app.use(express.static(path.join(__dirname, "../client/build")));
 

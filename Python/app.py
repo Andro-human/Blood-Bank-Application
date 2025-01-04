@@ -5,6 +5,7 @@ from prophet import Prophet
 from pymongo import MongoClient
 import numpy as np
 import requests
+import os
 app = Flask(__name__)
 CORS(app)
 
@@ -71,14 +72,25 @@ def month_averages(forecast):
 
 @app.route('/api/predictions', methods=['POST'])
 def put_all_prediction():
-    blood_Type_list = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-']
+    try:
+        blood_Type_list = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-']
+        all_predictions = []
 
-    for bloodType in blood_Type_list:
-        get_predictions(bloodType)
+        for bloodType in blood_Type_list:
+            predictions = get_predictions(bloodType)
+            if "error" in predictions:
+                raise RuntimeError(f"Error in predictions for {bloodType}: {predictions['error']}")
+            all_predictions.extend(predictions)
+            
+        # Send all predictions in a single API call
+        base_url = os.getenv("API_URL", "http://localhost:8080")
+        api_url = f"{base_url}/api/v1/predict/insertPredictions"
+        response = requests.post(api_url, json={"predictions": all_predictions})
 
-    return {
-        "status": "working"
-    }
+        return {"status": "success", "message": response.text}
+    except Exception as e:
+        return {"status": "failure", "error": str(e)}, 500
+
 
 @app.route('/')
 def healthCheck():
@@ -92,51 +104,34 @@ def get_predictions(bloodType):
         # Fetch data and train model
         data = fetch_data_from_mongodb(bloodType)
         model = train_prophet_model(data)
+        
         forecast = forecast_values(model, periods=365)
         # Calculate averages
         monthly_avg = month_averages(forecast)
         yearly_average = yearly_averages(forecast)
-        # Convert to lists for API insertion
-        L_yearly = yearly_average.tolist()
-        L_monthly = monthly_avg.tolist()
 
-        # Prepare the URL for API insertion
-        api_url = "http://localhost:8080/api/v1/predict/insertPrediction"
+        # Collect predictions
+        predictions = []
 
-        # Insert yearly predictions
-        # print("L_yearly", L_yearly);
-        for idx, value in enumerate(L_yearly):
-            prediction = {
+        # Add yearly predictions
+        for idx, value in enumerate(yearly_average.tolist()):
+            predictions.append({
                 "bloodType": bloodType,
                 "index": idx + 1,  # Assuming index starts from 1
                 "value": value,
                 "predictionType": "yearly_avg"
-            }
-            # print("yearlyPrediction", prediction);
-            response = requests.post(api_url, json=prediction)
-            # print("response", response.text)
+            })
 
-        # Insert monthly predictions
-        # print("L_monthly", L_monthly);
-        for idx, value in enumerate(L_monthly):
-            prediction = {
+        # Add monthly predictions
+        for idx, value in enumerate(monthly_avg.tolist()):
+            predictions.append({
                 "bloodType": bloodType,
                 "index": idx + 1,  # Assuming index starts from 1
                 "value": value,
                 "predictionType": "monthly_avg"
-            }
-            # print("monthlyPrediction", prediction);
-            response = requests.post(api_url, json=prediction)
-            # print("response", response.text);
-        
-        # Return the results
-        return {
-            "yearly_averages_val": np.mean(L_yearly),
-            "month_averages_val": np.mean(L_monthly),
-            "yearly_averages": L_yearly,
-            "monthly_averages": L_monthly
-        }
+            })
 
+        return predictions
     except Exception as e:
         return {"error": str(e)}
     

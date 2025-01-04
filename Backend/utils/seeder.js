@@ -27,9 +27,7 @@ const getRandomDate = (startYear = 2022, endYear = 2024) => {
 };
 
 const organisationIds = [
-  "6581c3b98c2c1025afdbae57",
-  "676efe62fdc3c17a8716533f",
-  "676efe62fdc3c17a87165340",
+  "6581c3b98c2c1025afdbae57"
 ];
 
 const hospitalIds = [
@@ -88,7 +86,7 @@ const generateRandomData = () => {
 
 const seedInventory = async () => {
   try {
-    await Inventory.deleteMany(); // Optional: Clear existing data
+    // await Inventory.deleteMany(); // Optional: Clear existing data
     console.log("Existing data cleared.");
 
     const records = [];
