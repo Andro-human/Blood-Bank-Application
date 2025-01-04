@@ -57,28 +57,27 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/api/v1/predict/fetchMonthlyPredictions`)
+      .get(`${process.env.REACT_APP_BASEURL}/predict/fetchMonthlyPredictions`)
       .then((response) => {
+        console.log(`${process.env.REACT_APP_BASEURL}/api/v1/predict/fetchMonthlyPredictions`)
         const monthlyData = response.data;
         setMonthlyPredictions(monthlyData.data);
-        setTotalMonthly(Math.abs(monthlyData.totalValue));
-        console.log(totalMonthly);
+        setTotalMonthly(monthlyData.totalValue);
       })
       .catch((error) => {
-        console.error("Error fetching historical data:", error);
+        console.error("Error fetching monthly data:", error);
       });
   }, []);
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}http://localhost:8080/api/v1/predict/fetchYearlyPredictions`)
+      .get(`${process.env.REACT_APP_BASEURL}/predict/fetchYearlyPredictions`)
       .then((response) => {
         const YearlyData = response.data;
-        console.log(YearlyData);
         setYearlyPrediction(YearlyData.data);
       })
       .catch((error) => {
-        console.error("Error fetching historical data:", error);
+        console.error("Error fetching yearly data:", error);
       });
   }, []);
 
