@@ -13,7 +13,7 @@ import Organisation from "./pages/Dashboard/Organisation";
 import Consumer from "./pages/Dashboard/Consumer";
 import Donation from "./pages/Dashboard/Donation";
 import Predict from "./pages/Dashboard/Predict"
-import Test from "./components/shared/Layout/Test";
+import Analytics from "./pages/Dashboard/Analytics";
 
 function App() {
   return (
@@ -83,19 +83,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+          <Route
+           path="/Analytics"
+           element={
+             <ProtectedRoute>
+               <Analytics />
+             </ProtectedRoute>
+           }
+         />
          <Route
           path="/predict"
           element={
             <ProtectedRoute>
               <Predict />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/test"
-          element={
-            <ProtectedRoute>
-              <Test />
             </ProtectedRoute>
           }
         />

@@ -27,7 +27,7 @@ const getRandomDate = (startYear = 2022, endYear = 2024) => {
 };
 
 const organisationIds = [
-  "6581c3b98c2c1025afdbae57"
+  "6511b9c27469d135a84d1a61"
 ];
 
 const hospitalIds = [
@@ -52,8 +52,8 @@ const donorIds = [
 ];
 
 const generateRandomData = () => {
-  const inventoryType = Math.random() > 0.5 ? "in" : "out";
-  const bloodGroups = ["O+", "O-", "A+", "A-", "B+", "B-"];
+  const inventoryType = "in";
+  const bloodGroups = ["B-"];
   const bloodGroup =
     bloodGroups[Math.floor(Math.random() * bloodGroups.length)];
   const quantity = Math.floor(Math.random() * 10) + 1;
@@ -90,7 +90,7 @@ const seedInventory = async () => {
     console.log("Existing data cleared.");
 
     const records = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 15; i++) {
       const record = generateRandomData();
       records.push(record);
     }
