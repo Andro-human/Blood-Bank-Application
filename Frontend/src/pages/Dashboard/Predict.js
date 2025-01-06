@@ -238,7 +238,7 @@ const App = () => {
             marginBottom: "16px", 
           }}
         >
-          Total Predicted Demand for the next month: {Math.round(totalMonthly)}ML
+          Total Predicted Demand for the next month: {Math.round(totalMonthly)} ML
         </Box>
       </div>
     </Layout>
