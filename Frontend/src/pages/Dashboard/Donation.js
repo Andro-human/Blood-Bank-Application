@@ -17,7 +17,6 @@ const Donation = () => {
             donor: user?._id
           }
         });
-        // console.log(data);
         if (data?.success)
           setData(data.inventory)
       } catch (error) {

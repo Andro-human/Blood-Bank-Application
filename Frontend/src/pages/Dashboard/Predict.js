@@ -59,7 +59,6 @@ const App = () => {
     axios
       .get(`${process.env.REACT_APP_BASEURL}/predict/fetchMonthlyPredictions`)
       .then((response) => {
-        console.log(`${process.env.REACT_APP_BASEURL}/api/v1/predict/fetchMonthlyPredictions`)
         const monthlyData = response.data;
         setMonthlyPredictions(monthlyData.data);
         setTotalMonthly(monthlyData.totalValue);

@@ -11,12 +11,6 @@ const createInventoryController = async (req, res) => {
     if (!user) {
       throw new Error("User Not Found");
     }
-    // if (inventoryType == "in" && user.role !== "donor") {
-    //   throw new Error("Not a donor account");
-    // }
-    // if (inventoryType == "out" && user.role !== "hospital") {
-    //   throw new Error("Not a hospital");
-    // }
 
     if (req.body.inventoryType == "out") {
       const requestedBloodGroup = req.body.bloodGroup;
@@ -40,9 +34,7 @@ const createInventoryController = async (req, res) => {
         },
       ]);
 
-      // console.log(`Total In`, totalInOfRequestedBlood);
       const totalIn = totalInOfRequestedBlood[0]?.total || 0;
-      //calculate OUT blood Quantity
       const totalOutOfRequestedBloodGroup = await inventoryModel.aggregate([
         {
           $match: {
@@ -81,7 +73,6 @@ const createInventoryController = async (req, res) => {
       message: "New Blood Record Added",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error in Create Inventory API",
@@ -106,7 +97,6 @@ const getInventoryController = async (req, res) => {
       inventory,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error in get all inventory api",
@@ -129,7 +119,6 @@ const getInventoryHospitalController = async (req, res) => {
       inventory,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error in Consumer inventory api",
@@ -155,7 +144,6 @@ const getDonorsController = async (req, res) => {
       donors,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error in Donor records",
@@ -184,7 +172,6 @@ const getHospitalContoller = async (req, res) => {
       hospitals,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       message: "Error in get Hospital API",
@@ -198,7 +185,6 @@ const getOrganisationController = async(req, res) => {
   try {
     const donor = req.body.userId
     const orgId = await inventoryModel.distinct('organisation', {donor})
-    
     //find  org
     const organisations = await userModel.find({
       _id: {$in: orgId}
@@ -210,7 +196,6 @@ const getOrganisationController = async(req, res) => {
       organisations
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).send({
       success:false,
       message: 'Error in Donor Org API',
@@ -235,7 +220,6 @@ const getOrganisationHospitalController = async(req, res) => {
       organisations
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).send({
       success:false,
       message: 'Error in Hospital Org API',

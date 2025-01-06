@@ -4,9 +4,8 @@ const inventoryModel = require("../models/inventoryModel");
 const bloodGroupDetails = async (req, res) => {
   try {
     const bloodGroups = ["O+", "O-", "A+", "A-", "B+", "B-"];
-    const organisation = new mongoose.Types.ObjectId(req.body.userId);
-    console.log(organisation);
-    if (!organisation) {
+    const currOrganisation = new mongoose.Types.ObjectId(req.body.userId);
+    if (!currOrganisation) {
       return res.status(400).send({
         success: false,
         message: "Invalid userId provided",
@@ -17,20 +16,23 @@ const bloodGroupDetails = async (req, res) => {
     const inventoryData = await inventoryModel.aggregate([
       {
         $group: {
-          _id: { organisation, bloodGroup: "$bloodGroup", inventoryType: "$inventoryType" },
+          _id: {
+            organisation: "$organisation",
+            bloodGroup: "$bloodGroup",
+            inventoryType: "$inventoryType",
+          },
           total: { $sum: "$quantity" },
         },
       },
     ]);
 
-    console.log("data: ", inventoryData);
-    // Transform the data
     const bloodGroupData = bloodGroups.map((bloodGroup) => {
       const totalIn =
         inventoryData.find(
           (item) =>
+            item._id.organisation.toString() === currOrganisation.toString() && 
             item._id.bloodGroup === bloodGroup &&
-            item._id.inventoryType === "in" 
+            item._id.inventoryType === "in"
         )?.total || 0;
 
       const totalOut =
@@ -39,7 +41,6 @@ const bloodGroupDetails = async (req, res) => {
             item._id.bloodGroup === bloodGroup &&
             item._id.inventoryType === "out"
         )?.total || 0;
-
       const totalAvailable = totalIn - totalOut;
 
       return { bloodGroup, totalIn, totalOut, totalAvailable };

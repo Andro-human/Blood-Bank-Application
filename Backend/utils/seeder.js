@@ -27,7 +27,7 @@ const getRandomDate = (startYear = 2022, endYear = 2024) => {
 };
 
 const organisationIds = [
-  "6511b9c27469d135a84d1a61"
+  "6581c3b98c2c1025afdbae57"
 ];
 
 const hospitalIds = [

@@ -7,10 +7,11 @@ import "../styles/homePage.css";
 import API from "../services/API.js";
 import moment from "moment";
 import Modal from "../components/shared/modal/Modal.js";
-
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, user } = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
+  const navigate = useNavigate()
 
   //get function
   const getBloodRecords = async () => {
@@ -35,6 +36,7 @@ const HomePage = () => {
   }, [error]);
   return (
     <Layout>
+      {user?.role === 'admin' && navigate('admin')}
       {loading ? (
         <Spinner />
       ) : (

@@ -2,25 +2,41 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
 import API from "../../services/API"
 import moment from "moment";
-import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
-const Donor = () => {
+const OrgList = () => {
   const [data, setData] = useState([]);
 
   //find donor records
-  const getDonors = async () => {
+  const getOrgs = async () => {
     try {
-      const { data } = await API.get("/inventory/get-donors");
+      const { data } = await API.get("/admin/org-list");
       if (data?.success)
-        setData(data.donors)
+        setData(data.orgData)
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getDonors();
+    getOrgs();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      let answer = window.confirm('Are you sure you want to delete this donor?', 'Yes')
+      if (!answer) return;
+      const {data} = await API.delete(`/admin/delete-user/${id}`);
+      if (data?.success) {
+        toast.success(data?.message);
+        window.location.reload()
+      }
+      else toast.error(data?.message);
+      
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <Layout>
@@ -36,6 +52,7 @@ const Donor = () => {
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Date</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -47,6 +64,9 @@ const Donor = () => {
                   <td>
                     {moment(record.createdAt).format("DD/MM/YYY hh:mm A")}
                   </td>
+                  <td>
+                    <button className="btn btn-danger" onClick={() => handleDelete(record._id)}>Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -55,4 +75,4 @@ const Donor = () => {
   );
 };
 
-export default Donor;
+export default OrgList;

@@ -13,13 +13,11 @@ const Organisation = () => {
     try {
       if (user?.role === "donor") {
         const { data } = await API.get("/inventory/get-organisations-donor");
-        // console.log(data);
         if (data?.success) setData(data.organisations);
       }
 
       if (user?.role === "hospital") {
         const { data } = await API.get("/inventory/get-organisations-hospital");
-        // console.log(data);
         if (data?.success) setData(data.organisations);
       }
     } catch (error) {
