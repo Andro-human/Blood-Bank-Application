@@ -93,8 +93,7 @@ const App = () => {
         `${process.env.REACT_APP_BASEURL}/predict/fetchLatestPredictions`
       );
       if (response?.data?.success) {
-        toast.success("Latest Data Fetched Successfully");
-        window.location.reload();
+        toast.success(response?.data?.message);
       }
     } catch (error) {
       toast.error("Error fetching Latest data");
