@@ -6,7 +6,7 @@ const axios = require("axios");
 const insertPredictions = async (req, res) => {
   try {
     const { predictions, organisationId } = req.body;
-    
+
     if (
       !predictions ||
       !Array.isArray(predictions) ||
@@ -43,7 +43,7 @@ const monthlyPrediction = async (req, res) => {
     const monthlyData = await predictionModel
       .find({
         predictionType: "monthly_avg",
-        organisation: organisationId
+        organisation: organisationId,
       })
       .sort({ bloodType: 1, index: 1 }); // First, sort by bloodType, then by index
     let totalValue = 0;
@@ -85,7 +85,7 @@ const yearlyPrediction = async (req, res) => {
     const yearlyData = await predictionModel
       .find({
         predictionType: "yearly_avg",
-        organisation: organisationId
+        organisation: organisationId,
       })
       .sort({ bloodType: 1, index: 1 });
 
@@ -130,26 +130,36 @@ const fetchLatestPrediction = async (req, res) => {
       });
     }
 
-    const response = await axios.post(
+    const response = axios.post(
       `${process.env.PREDICT_URL}/api/predictions`,
       { userId },
       {
         headers: {
           "Content-Type": "application/json",
         },
-        timeout: 300000,
       }
     );
 
-    if (response?.status) {
-      return res.status(201).send({
-        success: true,
-        message: "Predictions Fetched Successfully",
+    axios
+      .post(
+        `${process.env.PREDICT_URL}/api/predictions`,
+        { userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("External API call successful:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error calling external API:", error.message);
       });
-    } else console.log(response?.error);
-    return res.status(500).send({
-      success: false,
-      message: "Failed to fetch prediction from external API",
+
+    return res.status(202).send({
+      success: true,
+      message: "Request received. Predictions will be updated shortly.",
     });
   } catch (error) {
     return res.status(500).send({
