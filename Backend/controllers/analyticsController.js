@@ -38,6 +38,7 @@ const bloodGroupDetails = async (req, res) => {
       const totalOut =
         inventoryData.find(
           (item) =>
+            item._id.organisation.toString() === currOrganisation.toString() && 
             item._id.bloodGroup === bloodGroup &&
             item._id.inventoryType === "out"
         )?.total || 0;
