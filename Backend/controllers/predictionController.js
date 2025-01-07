@@ -137,6 +137,7 @@ const fetchLatestPrediction = async (req, res) => {
         headers: {
           "Content-Type": "application/json",
         },
+        timeout: 300000,
       }
     );
 
