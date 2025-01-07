@@ -92,7 +92,6 @@ const App = () => {
       const response = await API.get(
         `${process.env.REACT_APP_BASEURL}/predict/fetchLatestPredictions`
       );
-      console.log("response", response);
       if (response?.data?.success) {
         toast.success("Latest Data Fetched Successfully");
         window.location.reload();
