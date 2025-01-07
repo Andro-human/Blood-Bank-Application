@@ -16,6 +16,10 @@ const PredictionSchema = new mongoose.Schema({
     predictionType: {
         type: String,
         required: [true, "address is required"],
+    },
+    organisation: {
+        type: String,
+        required: true,
     }
 });
 
